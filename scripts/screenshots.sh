@@ -95,7 +95,7 @@ valid_capture() {
 # capture <udid> <device label> <scene> [<scene> ...]: boots the simulator, captures every scene,
 # shuts it down again, so `booted` always means this one simulator.
 capture() {
-  local udid="$1" device="$2" scene file previous="" attempt ok
+  local udid="$1" device="$2" scene file previous="" attempt ok waited
   shift 2
   local scenes=("$@")
   xcrun simctl shutdown all > /dev/null 2>&1 || true
@@ -104,6 +104,13 @@ capture() {
   xcrun simctl status_bar "$udid" override --time "9:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3
   xcrun simctl ui "$udid" appearance light
   xcrun simctl install "$udid" "$APP"
+  local container home
+  container=$(xcrun simctl get_app_container "$udid" "$BUNDLE_ID" data)
+  # A first boot can still be setting up the home screen; give it time, then keep a capture of
+  # it so a frame where the app never came to the front is rejected.
+  sleep 10
+  home="$OUT/.home-$device.png"
+  xcrun simctl io "$udid" screenshot "$home"
 
   for scene in "${scenes[@]}"; do
     file="$OUT/$device-$scene.png"
@@ -111,11 +118,22 @@ capture() {
     for attempt in 1 2 3; do
       xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
       sleep 1
+      rm -f "$container/tmp/screenshot-ready"
       xcrun simctl launch "$udid" "$BUNDLE_ID" -screenshot "$scene"
-      sleep $((6 + attempt * 2))
+      # The app writes this marker once the scene is on screen.
+      waited=0
+      while [ ! -f "$container/tmp/screenshot-ready" ] && [ "$waited" -lt 60 ]; do
+        sleep 1
+        waited=$((waited + 1))
+      done
+      if [ ! -f "$container/tmp/screenshot-ready" ]; then
+        echo "The app did not show $scene on $device, retrying"
+        continue
+      fi
+      sleep $((3 + attempt * 2))
       rm -f "$file"
-      xcrun simctl io booted screenshot "$file"
-      if valid_capture "$file" "$previous"; then
+      xcrun simctl io "$udid" screenshot "$file"
+      if valid_capture "$file" "$previous" && ! cmp -s "$file" "$home"; then
         ok=1
         break
       fi
@@ -130,6 +148,7 @@ capture() {
     echo "Captured $file ($(wc -c < "$file") bytes)"
   done
 
+  rm -f "$home"
   xcrun simctl shutdown "$udid" || true
 }
 

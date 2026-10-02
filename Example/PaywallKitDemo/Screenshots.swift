@@ -34,6 +34,17 @@ struct ScreenshotView: View {
     }
 
     var body: some View {
+        content
+            .task {
+                // Tells scripts/screenshots.sh that the scene is on screen.
+                let marker = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("screenshot-ready")
+                try? await Task.sleep(for: .seconds(1))
+                try? scene.rawValue.write(to: marker, atomically: true, encoding: .utf8)
+            }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         switch scene {
         case .hero:
             HeroPaywall(controller: controller, content: DemoContent.heroContent)
