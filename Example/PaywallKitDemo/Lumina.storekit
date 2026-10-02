@@ -1,0 +1,109 @@
+{
+  "identifier" : "4C1E2B7A",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "79.99",
+      "familyShareable" : true,
+      "internalID" : "6743100003",
+      "localizations" : [
+        {
+          "description" : "Every Lumina Pro feature, forever.",
+          "displayName" : "Lumina Pro Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "lumina.pro.lifetime",
+      "referenceName" : "Lumina Pro Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6743100000",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 780000000,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21610001",
+      "localizations" : [
+
+      ],
+      "name" : "Lumina Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6743100001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Every Lumina Pro feature, billed monthly.",
+              "displayName" : "Lumina Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "lumina.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Lumina Pro Monthly",
+          "subscriptionGroupID" : "21610001",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "39.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6743100002",
+          "introductoryOffer" : {
+            "internalID" : "6743100004",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Every Lumina Pro feature, billed yearly.",
+              "displayName" : "Lumina Pro Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "lumina.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Lumina Pro Yearly",
+          "subscriptionGroupID" : "21610001",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
